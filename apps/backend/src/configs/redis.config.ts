@@ -1,5 +1,6 @@
 import { createClient, RedisClientType } from 'redis';
 import { env } from './envConfig';
+import { logger } from '@/utils/logger';
 
 export const redisClient: RedisClientType = createClient({
     username: env.REDIS_USERNAME,
@@ -15,6 +16,6 @@ redisClient.on('error', err => console.log('Redis Client Error', err));
 export const connectRedis = async () => {
     if (!redisClient.isOpen) {
         await redisClient.connect();
-        console.log("Redis Connected");
+        logger.info("Redis Connected");
     }
 }

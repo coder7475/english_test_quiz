@@ -1,7 +1,7 @@
 import AppError from "@/configs/AppError";
 import { UserModel } from "../user/user.model";
 import { generateOtp, OTP_EXPIRATION } from "@/utils/otpHelpers";
-import { redisClient } from "@/configs/redis.config";
+import { connectRedis, redisClient } from "@/configs/redis.config";
 import { sendEmail } from "@/utils/sendEmail";
 
 const sendOTP = async (email: string, name: string) => {
@@ -18,7 +18,7 @@ const sendOTP = async (email: string, name: string) => {
     const otp = generateOtp();
 
     const redisKey = `otp:${email}`
-
+    await connectRedis();
     await redisClient.set(redisKey, otp, {
         EX: OTP_EXPIRATION
     })
