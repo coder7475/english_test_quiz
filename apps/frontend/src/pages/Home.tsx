@@ -3,15 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { AwardIcon, Clock, TestTubeDiagonal, TrendingUp } from "lucide-react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 
 const Index = () => {
   const { data } = useUserInfoQuery(undefined);
-  console.log(data);
+  
   const navigate = useNavigate();
-  if (data?.data?.email) {
-    navigate("/dashboard");
-  }
+  
+  useEffect(() => {
+    if (data?.data?.email) {
+      navigate("/dashboard");
+    }
+  }, [data?.data?.email, navigate]);
+
 
   return (
     <div className="min-h-screen bg-gradient-hero">
