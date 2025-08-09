@@ -1,0 +1,62 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"type": "module",
+	"private": "true",
+	"description": "An express starter with typescript",
+	"author": "Robiul Hossain",
+	"licence": "MIT",
+	"repository": "coder7475/express-typescript-template",
+	"main": "dist/server.js",
+	"scripts": {
+		"dev": "tsx watch src/server.ts",
+		"build": "tsc -p tsconfig.json && tsup",
+		"vercel-build": "pnpm build",
+		"start": "node dist/server.js",
+		"lint": "biome lint --fix",
+		"format": "biome format --write",
+		"clean": "rm -rf dist"
+	},
+	"dependencies": {
+		"@repo/db": "workspace:*",
+		"@repo/math": "workspace: *",
+		"@repo/utils": "workspace:*",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"helmet": "^8.1.0",
+		"jsonwebtoken": "^9.0.2",
+		"mongoose": "^8.16.3",
+		"pino": "^9.7.0",
+		"yamljs": "^0.3.0",
+		"zod": "^3.25.67"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.0.0",
+		"@repo/typescript-config": "workspace:*",
+		"@types/cors": "^2.8.19",
+		"@types/express": "^4.17.21",
+		"@types/jsonwebtoken": "^9.0.10",
+		"@types/node": "^20.4.2",
+		"pino-pretty": "^13.0.0",
+		"tsup": "^8.5.0",
+		"tsx": "^4.20.2",
+		"typescript": "^5.2.2"
+	},
+	"tsup": {
+		"entry": [
+			"src/server.ts"
+		],
+		"outDir": "dist",
+		"format": [
+			"esm",
+			"cjs"
+		],
+		"target": "es2020",
+		"sourcemap": true,
+		"clean": true,
+		"dts": true,
+		"splitting": false,
+		"skipNodeModulesBundle": true
+	}
+}

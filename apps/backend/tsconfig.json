@@ -1,0 +1,19 @@
+{
+	"extends": "@repo/typescript-config/base.json",
+	"compilerOptions": {
+		"outDir": "dist",
+		"noEmit": false,
+		"baseUrl": "./src",
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"importsNotUsedAsValues": "remove",
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"paths": {
+			"@/*": ["*"]
+		}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules"]
+}
