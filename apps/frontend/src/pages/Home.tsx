@@ -1,15 +1,17 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { AwardIcon, Clock, TestTubeDiagonal, TrendingUp } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Index = () => {
-//   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
-
-//   if (isAuthenticated) {
-//     return <Link to="/dashboard" replace />;
-//   }
+  const { data } = useUserInfoQuery(undefined);
+  console.log(data);
+  const navigate = useNavigate();
+  if (data?.data?.email) {
+    navigate("/dashboard");
+  }
 
   return (
     <div className="min-h-screen bg-gradient-hero">
