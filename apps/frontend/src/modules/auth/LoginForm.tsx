@@ -26,8 +26,8 @@ export function LoginForm({
       const res = await login(data).unwrap();
     
       if (res.success) {
-        toast.success("Login Successfull!");
-        navigate("/dashboard");
+        toast.success("Login Successfully!");
+        navigate("/");
       }
     } catch (err) {
       console.error(err);
@@ -37,8 +37,7 @@ export function LoginForm({
         navigate("/verify", { state: data.email });
       }
        if (err.status === 400) {
-        toast.error("Incorrect Password");
-        // navigate("/verify", { state: data.email });
+        toast.error("Incorrect Password");        
       }
     }
   };
