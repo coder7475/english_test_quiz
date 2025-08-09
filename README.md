@@ -58,7 +58,7 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/) with stri
 - **Node.js** >= 18.0.0
 - **pnpm** >= 8.0.0 (recommended package manager)
 - **MongoDB** >= 5.0
-- **Nodemailer/Twilio** (optional, for email/SMS OTP)
+- **Nodemailer** (for email OTP)
 - **Safe Exam Browser** (optional, for secure exam environment)
 
 ### Installation
@@ -128,6 +128,9 @@ pnpm dev
 # Run only the backend
 pnpm backend
 
+# Run only the frontend
+pnpm frontend
+
 # Run specific app
 pnpm dev --filter=frontend
 pnpm dev --filter=backend
@@ -139,8 +142,17 @@ pnpm dev --filter=backend
 # Build all packages and apps
 pnpm build
 
-# Start production server
+# Deploy the backend
+vercel deploy --prod
+
+# Start production server - Backend
 cd apps/backend && pnpm start
+
+# Start preview server - Frontend
+cd apps/frontend && pnpm preview
+
+# Deploy the Frontend
+pnpm run deploy 
 ```
 
 ## 📚 API Documentation
