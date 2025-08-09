@@ -17,7 +17,7 @@ import {
   useUserInfoQuery,
 } from "@/redux/features/auth/auth.api";
 import { useAppDispatch } from "@/redux/hook";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ModeToggle } from "../mode-toggler";
 
 // Navigation links array to be used in both desktop and mobile menus
@@ -30,11 +30,11 @@ export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
    const [logout] = useLogoutMutation();
    const dispatch = useAppDispatch();
-//    console.log(data?.data?.email);
-// console.log(data);
+    const navigate = useNavigate();
    const handleLogout = async () => {
      await logout(undefined);
      dispatch(authApi.util.resetApiState());
+     navigate("/");
    };
 
   return (

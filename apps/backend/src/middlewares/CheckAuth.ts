@@ -14,9 +14,14 @@ export const checkAuth =
 	(...allowedRoles: string[]) =>
 	async (req: Request, _res: Response, next: NextFunction) => {
 		try {			
-			const token = req.headers?.authorization?.split(" ")[1] || req.cookies?.accessToken;
+			const authHeader = req.headers.authorization;
+			let token: string | undefined;
+			if (authHeader?.startsWith("Bearer ")) {
+				token = authHeader.split(" ")[1];
+			} else if (req.cookies?.accessToken) {
+				token = req.cookies.accessToken;
+			}
 
-			console.log(token);
 
 			if (!token) {
 				throw new AppError(403, "Unauthorized: No token provided");

@@ -43,11 +43,14 @@ const FormSchema = z.object({
 export default function Verify() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [email] = useState(location.state);
+  
+const email = typeof location.state === "string"
+  ? location.state
+  : location.state?.email;
   const [confirmed, setConfirmed] = useState(false);
   const [sendOtp, { isLoading: isSendingOtp }] = useSendOtpMutation();
   const [verifyOtp, { isLoading: isVerifyingOtp }] = useVerifyOtpMutation();
-  const [timer, setTimer] = useState(5);
+  const [timer, setTimer] = useState(60);
   const [resendAttempts, setResendAttempts] = useState(0);
   const maxResendAttempts = 3;
 
