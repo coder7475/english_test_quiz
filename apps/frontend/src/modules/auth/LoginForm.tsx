@@ -32,12 +32,14 @@ export function LoginForm({
     } catch (err) {
       console.error(err);
 
-      if (err.status === 401) {
-        toast.error("Your account is not verified");
-        navigate("/verify", { state: data.email });
-      }
-       if (err.status === 400) {
-        toast.error("Incorrect Password");        
+      if (typeof err === "object" && err !== null && "status" in err) {
+        const status = (err as { status?: number }).status;
+        if (status === 401) {
+          toast.error("Your account is not verified");
+          navigate("/verify", { state: data.email });
+        } else if (status === 400) {
+          toast.error("Incorrect Password");
+        }
       }
     }
   };
