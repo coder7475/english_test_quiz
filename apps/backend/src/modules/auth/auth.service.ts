@@ -20,12 +20,18 @@ export const login = async (credentials: Partial<IUser>) => {
 		throw new AppError(400, "User does not exits!");
 	}
 
+	if (!isUser.isVerified) {
+		throw new AppError(400, "User is not verified!");
+	}
+
 	// Check password match
 	const pass = await bcrypt.compare(password, isUser.password);
 
 	if (!pass) {
 		throw new AppError(400, "Incorrect Password!");
 	}
+
+
 
 	const payload = {
 		id: isUser._id,
