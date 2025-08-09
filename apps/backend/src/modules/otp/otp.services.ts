@@ -37,7 +37,7 @@ const sendOTP = async (email: string, name: string) => {
 const verifyOTP = async (email: string, otp: string) => {
     // const user = await User.findOne({ email, isVerified: false })
     const user = await UserModel.findOne({ email })
-    console.log(otp);
+   
     if (!user) {
         throw new AppError(404, "User not found")
     }
@@ -49,7 +49,7 @@ const verifyOTP = async (email: string, otp: string) => {
     const redisKey = `otp:${email}`
     await connectRedis();
     const savedOtp = await redisClient.get(redisKey)
-    console.log(savedOtp);
+ 
     if (!savedOtp) {
         throw new AppError(401, "Invalid OTP");
     }
