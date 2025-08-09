@@ -14,7 +14,7 @@ const registerUser = catchAsync(
     sendResponse(res, {
       statusCode: 201,
       success: true,
-      message: "User registered successfully",
+      message: "User registered successfully. Please Verify your email.",
       data: user,
     });
   },

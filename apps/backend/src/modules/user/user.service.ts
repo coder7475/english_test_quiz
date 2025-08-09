@@ -30,6 +30,9 @@ const createUser = async (userData: Partial<IUser>): Promise<IUser> => {
   return await UserModel.create(user);
 };
 
+
+
+
 const updateUserById = async (userId: string, updateData: Partial<IUser>) => {
   const updatedUser = await UserModel.findByIdAndUpdate(
     userId,
@@ -39,6 +42,8 @@ const updateUserById = async (userId: string, updateData: Partial<IUser>) => {
 
   return updatedUser;
 };
+
+
 
 const findUserById = async (userId: string) => {
   return await UserModel.findById(userId).select("-password");

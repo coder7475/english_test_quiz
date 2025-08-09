@@ -5,12 +5,13 @@ import { generateToken, verifyToken } from "@/utils/jwtHelpers";
 
 import type { IUser } from "../user/user.interface";
 import { UserModel } from "../user/user.model";
+import { createUserTokens } from "@/utils/userTokens";
 
 export const login = async (credentials: Partial<IUser>) => {
 	const { email, password } = credentials;
 
 	if (!email || !password) {
-		throw new AppError(400, "Email and password are required!");
+		throw new AppError(400, "Email or password is Missing!");
 	}
 
 	const isUser = await UserModel.findOne({ email });
@@ -32,13 +33,10 @@ export const login = async (credentials: Partial<IUser>) => {
 		role: isUser.role,
 	};
 
-	const accessToken = generateToken(payload, "access");
-	const refreshToken = generateToken(payload, "refresh");
-
-	return {
-		accessToken,
-		refreshToken,
-	};
+	
+	const res = createUserTokens(payload);
+	
+	return res;
 };
 
 const reissueAccessToken = async (refreshToken: string) => {
