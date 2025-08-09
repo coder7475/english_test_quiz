@@ -59,6 +59,7 @@ export default function Verify() {
   });
 
   // Helper function to extract error message
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getErrorMessage = (error: any): string => {
     if (error?.data?.message) return error.data.message;
     if (error?.message) return error.message;
@@ -109,6 +110,7 @@ export default function Verify() {
       } else {
         toast.error(res.message || "Failed to send OTP", { id: toastId });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Send OTP Error:", error);
       const errorMessage = getErrorMessage(error);
@@ -178,6 +180,7 @@ export default function Verify() {
           message: res.message || "Invalid OTP. Please try again." 
         });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Verify OTP Error:", error);
       const errorMessage = getErrorMessage(error);
