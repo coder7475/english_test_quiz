@@ -40,7 +40,7 @@ const registerSchema = z
 export function RegisterForm({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: Readonly<React.HTMLAttributes<HTMLDivElement>>) {
   const [register] = useRegisterMutation();
   const navigate = useNavigate();
 
