@@ -44,6 +44,17 @@ const envSchema = z.object({
 	JWT_ACCESS_EXPIRES: z.string(),
 	JWT_REFRESH_SECRET: z.string(),
 	JWT_REFRESH_EXPIRES: z.string(),
+	REDIS_USERNAME: z.string(),
+	REDIS_PASSWORD: z.string(),
+	REDIS_HOST: z.string(),
+	REDIS_PORT: z
+		.string()
+		.default("6379")
+		.transform((val) => {
+			const parsed = Number(val);
+			if (Number.isNaN(parsed)) throw new Error("REDIS_PORT must be a valid number");
+			return parsed;
+		}),
 	PASSWORD_HASH_SALT: z
 		.string()
 		.default("12")
@@ -53,6 +64,18 @@ const envSchema = z.object({
 				throw new Error("PASSWORD_HASH_SALT must be a valid number");
 			return parsed;
 		}),
+		SMTP_HOST: z.string().default("smtp.gmail.com"),
+		SMTP_PORT: z
+			.string()
+			.default("465")
+			.transform((val) => {
+				const parsed = Number(val);
+				if (Number.isNaN(parsed)) throw new Error("SMTP_PORT must be a valid number");
+				return parsed;
+			}),
+		SMTP_USER: z.string(),
+		SMTP_PASS: z.string(),
+		SMTP_FROM: z.string(),
 });
 
 // Validate process.env and infer typed env object

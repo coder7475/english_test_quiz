@@ -7,6 +7,8 @@ import helmet from "helmet";
 import { env } from "./configs/envConfig";
 import { middlewares } from "./middlewares";
 import sendResponse from "./utils/sendResponse";
+import cookieParser from "cookie-parser";
+
 
 const app: Express = express();
 
@@ -21,6 +23,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
+app.use(cookieParser());
 
 app.use("/api/v1", indexRouter);
 

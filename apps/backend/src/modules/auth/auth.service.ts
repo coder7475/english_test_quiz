@@ -17,7 +17,11 @@ export const login = async (credentials: Partial<IUser>) => {
 	const isUser = await UserModel.findOne({ email });
 
 	if (!isUser) {
-		throw new AppError(400, "User does not exits!");
+		throw new AppError(404, "User does not exits!");
+	}
+
+	if (!isUser.isVerified) {
+		throw new AppError(401, "User is not verified!");
 	}
 
 	// Check password match
@@ -26,6 +30,8 @@ export const login = async (credentials: Partial<IUser>) => {
 	if (!pass) {
 		throw new AppError(400, "Incorrect Password!");
 	}
+
+
 
 	const payload = {
 		id: isUser._id,
