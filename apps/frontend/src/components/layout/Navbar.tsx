@@ -19,6 +19,7 @@ import {
 import { useAppDispatch } from "@/redux/hook";
 import { Link, useNavigate } from "react-router";
 import { ModeToggle } from "../mode-toggler";
+import { TestTube2 } from "lucide-react";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -28,32 +29,34 @@ const navigationLinks = [
 
 export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
-   const [logout] = useLogoutMutation();
-   const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-   const handleLogout = async () => {
-     await logout(undefined);
-     dispatch(authApi.util.resetApiState());
-     navigate("/");
-   };
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout(undefined);
+    dispatch(authApi.util.resetApiState());
+    navigate("/");
+  };
 
   return (
-    <header className="border-b">
+    <header className="border-b bg-white/80 dark:bg-background/80 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
         {/* Left side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {/* Mobile menu trigger */}
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                className="group size-8 md:hidden"
+                className="group size-9 md:hidden rounded-full border border-muted-foreground/20 shadow-sm hover:bg-muted transition"
                 variant="ghost"
                 size="icon"
+                aria-label="Open navigation menu"
               >
                 <svg
                   className="pointer-events-none"
-                  width={16}
-                  height={16}
+                  width={20}
+                  height={20}
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -77,13 +80,13 @@ export default function Navbar() {
                 </svg>
               </Button>
             </PopoverTrigger>
-            <PopoverContent align="start" className="w-36 p-1 md:hidden">
+            <PopoverContent align="start" className="w-40 p-2 md:hidden rounded-lg shadow-lg bg-white dark:bg-card">
               <NavigationMenu className="max-w-none *:w-full">
-                <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
+                <NavigationMenuList className="flex-col items-start gap-1">
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink asChild className="py-1.5">
-                        <Link to={link.href}>{link.label} </Link>
+                      <NavigationMenuLink asChild className="block w-full px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:bg-muted hover:text-primary transition">
+                        <Link to={link.href}>{link.label}</Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -93,8 +96,9 @@ export default function Navbar() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="/" className="text-primary hover:text-primary/90">
+            <a href="/" className="text-xl font-bold text-primary hover:text-primary/90 transition-colors tracking-tight">
               {/* <Logo /> */}
+             <TestTube2 className="w-12" />
             </a>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
@@ -103,7 +107,7 @@ export default function Navbar() {
                   <NavigationMenuItem key={index}>
                     <NavigationMenuLink
                       asChild
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                      className="px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-primary hover:bg-muted transition"
                     >
                       <Link to={link.href}>{link.label}</Link>
                     </NavigationMenuLink>
@@ -114,19 +118,21 @@ export default function Navbar() {
           </div>
         </div>
         {/* Right side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <ModeToggle />
-          {data?.data?.email && (
+          {data?.data?.email ? (
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="text-sm"
+              className="text-sm px-4 py-2 rounded-md border border-muted-foreground/20 shadow-sm hover:bg-muted transition"
             >
               Logout
             </Button>
-          )}
-          {!data?.data?.email && (
-            <Button asChild className="text-sm">
+          ) : (
+            <Button
+              asChild
+              className="text-sm px-4 py-2 rounded-md border border-primary/60 shadow-sm bg-primary text-white hover:bg-primary/90 transition"
+            >
               <Link to="/login">Login</Link>
             </Button>
           )}
