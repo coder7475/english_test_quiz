@@ -48,5 +48,4 @@ UserMongooseSchema.post('save', function (doc, next) {
   next();
 });
 
-
 export const UserModel: Model<IUserDoc> = model("User", UserMongooseSchema);
