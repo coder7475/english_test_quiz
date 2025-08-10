@@ -26,8 +26,12 @@ const registerSchema = z
         message: "Name is too short",
       })
       .max(50),
-    email: z.string(),
-    password: z.string().min(8, { message: "Password is too short" }),
+    email: z.string().email(),
+    password: z
+      .string()
+      .min(8, { message: "Password is too short" })
+      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+      .regex(/[^A-Za-z0-9]/, { message: "Password must contain at least one special character" }),
     confirmPassword: z
       .string()
       .min(8, { message: "Confirm Password is too short" }),
@@ -71,6 +75,7 @@ export function RegisterForm({
       
     } catch (error) {
       console.error(error);
+      toast.warning("User Creation failed or user already exits");
       navigate("/login");
     }
   };
