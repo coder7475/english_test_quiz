@@ -15,6 +15,12 @@ A modern, scalable digital competency assessment platform built with a TypeScrip
 
 ## 🏗️ Architecture
 
+### Architectural Design
+
+[![](./Architectural_Design.png)]
+
+
+
 This monorepo contains the following apps and packages:
 
 ### 📱 Applications
@@ -33,15 +39,6 @@ This monorepo contains the following apps and packages:
 ### 📦 Shared Packages
 
 - **`@repo/db`**: Database utilities and MongoDB connector with Mongoose
-- **`@repo/utils`**: Common utilities including:
-    - JWT token management
-    - Password hashing with bcrypt
-    - Email providers (Nodemailer)
-    - SMS providers (Twilio)
-    - OTP generation
-    - Certificate PDF generation
-- **`@repo/ui`**: Shared React component library for consistent UI elements
-- **`@repo/assessment`**: Assessment logic utilities for scoring and eligibility checks
 
 ### ⚙️ Configuration Packages
 
@@ -86,37 +83,49 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/) with stri
     
 4. **Configure Environment Variables:**
     
-    **Backend (.env):**
+**Backend (.env):**
     
-    ```env
-    # Server Configuration
-    PORT=3000
-    HOST=localhost
-    NODE_ENV=development
-    DB_URI=mongodb://127.0.0.1:27017/test-school
+```env
+# Server Configuration
+PORT=3000
+HOST=localhost
+NODE_ENV=development
+DB_URI="mongodb://127.0.0.1:27017/practice"
+FRONTEND_URL="http://localhost:5173"
+
+# JWT ENVS
+JWT_ACCESS_SECRET="access"
+JWT_ACCESS_EXPIRES="15m"
+JWT_REFRESH_SECRET="refresh"
+JWT_REFRESH_EXPIRES="7d"
+
+# Hash Salt
+PASSWORD_HASH_SALT=12
+
+# redis
+REDIS_HOST=redis-****
+REDIS_PORT=111**
+REDIS_USERNAME=default
+REDIS_PASSWORD=****
+
+
+# SMTP GMAIL FOR Production
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465 # change to 587 for development
+SMTP_USER=***@gmail.com
+SMTP_PASS=****
+SMTP_FROM=***@quiz.robiulhossain.com
+
+
+# Resend
+RESEND_API_KEY=re*****
+```
     
-    # JWT Configuration
-    JWT_ACCESS_SECRET=your-super-secret-access-key
-    JWT_ACCESS_EXPIRES=15m
-    JWT_REFRESH_SECRET=your-super-secret-refresh-key
-    JWT_REFRESH_EXPIRES=7d
+**Frontend (.env):**
     
-    # Password Hashing
-    PASSWORD_HASH_SALT=12
-    
-    # Email/SMS Services
-    NODEMAILER_HOST=smtp.example.com
-    NODEMAILER_PORT=587
-    NODEMAILER_USER=your-email@example.com
-    NODEMAILER_PASS=your-email-password
-    ```
-    
-    **Frontend (.env):**
-    
-    ```env
-    VITE_API_BASE_URL=http://localhost:3000
-    VITE_PUBLIC_PATH=/
-    ```
+```env
+VITE_BASE_URL="http://localhost:3000/api/v1"
+```
     
 
 ### Development
@@ -154,6 +163,11 @@ cd apps/frontend && pnpm preview
 # Deploy the Frontend
 pnpm run deploy 
 ```
+## Database Design
+
+### ER Diagram
+
+[![er_diagram](./ER_Diagram.png)]
 
 ## 📚 API Documentation
 
@@ -164,8 +178,8 @@ The backend provides a comprehensive REST API with the following endpoints:
 |Method|Endpoint|Description|
 |---|---|---|
 |POST|`/api/auth/register`|Register a new user|
-|GET|`/api/auth/verify`|Verify user’s email using a token|
-|POST|`/api/auth/login`|Login and receive JWTs|
+|POST|`/api/auth/login`|Login and receive JWTs tokens in cookie|
+|GET|`/api/auth/logout`| Logout and clear cookies |
 |POST|`/api/auth/refresh`|Refresh access token|
 |POST|`/api/auth/forgot-password`|Send password reset link|
 |POST|`/api/auth/reset-password`|Reset password using a reset token|
@@ -273,89 +287,9 @@ This Turborepo has additional tools set up for you:
 
 ## 📊 Database Schema
 
-### Users
+### ER Diagram
 
-```typescript
-{
-  _id: ObjectId;
-  email: string; // unique, required
-  password: string; // hashed, required
-  role: 'Admin' | 'Student' | 'Supervisor'; // required
-  isVerified: boolean; // default: false
-  verificationToken: string; // optional
-  verificationTokenExpiresAt: Date; // optional
-  resetPasswordToken: string; // optional
-  resetPasswordTokenExpiresAt: Date; // optional
-  certificationLevel: string; // optional, e.g., 'A1', 'C2'
-  createdAt: Date;
-  updatedAt: Date;
-}
-```
 
-### RefreshTokens
-
-```typescript
-{
-  _id: ObjectId;
-  token: string; // unique, required
-  userId: ObjectId; // reference to Users, required
-  expiresAt: Date; // required
-  createdAt: Date;
-}
-```
-
-### Questions
-
-```typescript
-{
-  _id: ObjectId;
-  competency: string; // required, one of 22 competencies
-  level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'; // required
-  text: string; // required
-  options: string[]; // required, array of 4 options
-  correctAnswer: number; // required, 0-based index
-}
-```
-
-### Assessments
-
-```typescript
-{
-  _id: ObjectId;
-  userId: ObjectId; // reference to Users, required
-  step: number; // 1, 2, or 3, required
-  questions: ObjectId[]; // 44 question references, required
-  answers: (number | null)[]; // 44 elements, selected option or null, required
-  startTime: Date; // required
-  endTime: Date; // optional
-  timeLimit: number; // minutes, required
-  score: number; // percentage, optional
-  status: 'in_progress' | 'completed'; // required
-}
-```
-
-### Certificates
-
-```typescript
-{
-  _id: ObjectId;
-  userId: ObjectId; // reference to Users, unique, required
-  level: string; // e.g., 'A1', 'C2', required
-  issuedAt: Date; // required
-  pdfPath: string; // optional
-}
-```
-
-### Config
-
-```typescript
-{
-  _id: ObjectId;
-  timeLimitStep1: number; // default: 44
-  timeLimitStep2: number; // default: 44
-  timeLimitStep3: number; // default: 44
-}
-```
 
 ## 🚀 Deployment
 
@@ -428,10 +362,6 @@ pnpm exec turbo link
 - [SRS](./Test_School_Competency.pdf)
 
 ## Diagrams
-
-### Architectural Design
-
-[![](./Architectural_Design.png)]
 
 ## 📄 License
 

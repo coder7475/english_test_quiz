@@ -346,7 +346,7 @@ const email = typeof location.state === "string"
                           disabled={timer !== 0 || isSendingOtp || resendAttempts >= maxResendAttempts}
                           className={cn("p-0 m-0", {
                             "cursor-pointer": timer === 0 && !isSendingOtp && resendAttempts < maxResendAttempts,
-                            "text-gray-500": timer !== 0 || isSendingOtp || resendAttempts >= maxResendAttempts,
+                            "text-gray-500 font-semibold": timer !== 0 || isSendingOtp || resendAttempts >= maxResendAttempts,
                           })}
                         >
                           {isSendingOtp 
