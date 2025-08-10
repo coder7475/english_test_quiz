@@ -22,14 +22,15 @@ const sendOTP = async (email: string, name: string) => {
     await redisClient.set(redisKey, otp, {
         EX: OTP_EXPIRATION
     })
-    console.log(otp)
+    
+    // console.log(otp)
     await sendEmail({
         to: email,
         subject: "Your OTP Code",
         templateName: "otp",
         templateData: {
-            name: name,
-            otp: otp
+            name,
+            otp
         }
     })
 };
