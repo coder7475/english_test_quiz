@@ -32,7 +32,6 @@ export const login = async (credentials: Partial<IUser>) => {
 	}
 
 
-
 	const payload = {
 		id: isUser._id,
 		email: isUser.email,
