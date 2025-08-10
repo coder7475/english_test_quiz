@@ -39,6 +39,9 @@ export function LoginForm({
           navigate("/verify", { state: data.email });
         } else if (status === 400) {
           toast.error("Incorrect Password");
+        } else if (status === 404) {
+          toast.error("User Does not exits!");
+          navigate("/register");
         }
       }
     }

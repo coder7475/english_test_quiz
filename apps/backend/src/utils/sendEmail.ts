@@ -237,7 +237,7 @@ export const sendEmail = async ({
         
     const resend = new Resend(env.RESEND_API_KEY);
 
-    const info = resend.emails.send({
+    const info = await resend.emails.send({
         from: env.SMTP_FROM,
         to: to,
         subject: subject,
