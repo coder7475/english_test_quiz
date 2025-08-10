@@ -423,17 +423,15 @@ pnpm exec turbo login
 pnpm exec turbo link
 ```
 
-## 📝 API Documentation Files
+## Documentation
 
-- **[API_Design.md](https://grok.com/chat/apps/backend/API_Design.md)**: Complete API endpoint documentation
-- **[SRS.md](https://grok.com/chat/apps/backend/SRS.md)**: Software Requirements Specification
-- **[Postman Collection](https://grok.com/chat/apps/backend/Test_School_API_Collection.json)**: Postman collection for testing APIs
-- **[Assessment Flow](https://grok.com/chat/apps/backend/Assessment_Flow_Sequence_Diagram.txt)**: Sequence diagram for assessment process
-- **[Database Schema](https://grok.com/chat/apps/backend/database_schema.md)**: Database schema documentation
+- [SRS](./Test_School_Competency.pdf)
 
-## 🖼️ Diagrams
+## Diagrams
 
-- **Assessment Flow**: Sequence diagram illustrating the three-step assessment process ([Assessment_Flow_Sequence_Diagram.txt](https://grok.com/chat/apps/backend/Assessment_Flow_Sequence_Diagram.txt)).
+### Architectural Design
+
+[![](./Architectural_Design.png)]
 
 ## 📄 License
 
