@@ -2,9 +2,12 @@ import { Request, Response } from "express";
 import { OTPServices } from "./otp.services";
 import { catchAsync } from "@/utils/asyncHandler";
 import sendResponse from "@/utils/sendResponse";
+import { env } from "@/configs/envConfig";
+import { mongoConnector } from "@repo/db";
 
 
 const sendOTP = catchAsync(async (req: Request, res: Response) => {
+    await mongoConnector(env.DB_URI);
     const { email, name } = req.body;
     await OTPServices.sendOTP(email, name);
 
@@ -17,6 +20,7 @@ const sendOTP = catchAsync(async (req: Request, res: Response) => {
 })
 
 const verifyOTP = catchAsync(async (req: Request, res: Response) => {
+    await mongoConnector(env.DB_URI);
     const { email, otp } = req.body;
     await OTPServices.verifyOTP(email, otp);
 

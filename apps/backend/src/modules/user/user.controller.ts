@@ -3,8 +3,11 @@ import { catchAsync } from "@/utils/asyncHandler";
 import sendResponse from "@/utils/sendResponse";
 
 import { UserServices } from "./user.service";
+import { env } from "@/configs/envConfig";
+import { mongoConnector } from "@repo/db";
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
+	 mongoConnector(env.DB_URI);
 	const userData = req.body;
 	const user = await UserServices.createUser(userData);
 
@@ -18,6 +21,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 
 const updateUser = catchAsync(
 	async (req: Request, res: Response, _next: NextFunction) => {
+		await mongoConnector(env.DB_URI);
 		const userId = req.user.id;
 		const updateData = req.body;
 		const result = await UserServices.updateUserById(userId, updateData);
@@ -44,8 +48,6 @@ const getMe = catchAsync(
 		});
 	},
 );
-
-
 
 
 export const userController = {

@@ -7,6 +7,192 @@ import path, { dirname } from "node:path";
 import { logger } from "./logger";
 import { fileURLToPath } from "node:url";
 
+const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification Code</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .greeting {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        
+        .otp-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #e9ecef;
+        }
+        
+        .otp-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .otp-code {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 4px;
+            margin: 10px 0;
+        }
+        
+        .validity-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .validity-info .icon {
+            font-size: 18px;
+            margin-right: 5px;
+        }
+        
+        .validity-text {
+            color: #856404;
+            font-weight: 500;
+        }
+        
+        .security-notice {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #721c24;
+        }
+        
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .footer-text {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+        
+        .company-name {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                margin: 10px;
+                border-radius: 0;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .otp-code {
+                font-size: 28px;
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🔐 Verification Code</h1>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">
+                Hello <%= name || 'User' %>,
+            </div>
+            
+            <div class="message">
+                We received a request to verify your account. Please use the One-Time Password (OTP) below to complete your verification:
+            </div>
+            
+            <div class="otp-container">
+                <div class="otp-label">Your OTP Code</div>
+                <div class="otp-code"><%= otp %></div>
+            </div>
+            
+            <div class="validity-info">
+                <span class="icon">⏰</span>
+                <span class="validity-text">This code expires in <strong>5 minutes</strong></span>
+            </div>
+            
+            <div class="security-notice">
+                <strong>Security Notice:</strong> Never share this code with anyone. Our team will never ask for your OTP code via phone, email, or any other communication method.
+            </div>
+            
+            <div class="message">
+                If you didn't request this verification code, please ignore this email or contact our support team if you have concerns about your account security.
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p class="footer-text">
+                This email was sent by <span class="company-name">Test School</span><br>
+                If you have any questions, please contact us at support@testschool.com
+            </p>
+        </div>
+    </div>
+</body>
+</html>`
 // Fix for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -39,14 +225,13 @@ export const sendEmail = async ({
 }: SendEmailOptions) => {
 
     try {
-        const templatePath = path.join(__dirname, 'templates', `${templateName}.ejs`);        
-        const html = await ejs.renderFile(templatePath, templateData || {});
+        // const templatePath = path.join(__dirname, 'templates', `${templateName}.ejs`);        
+        // const html = await ejs.renderFile(templatePath, templateData || {});
         const info = await transporter.sendMail({
             from: env.SMTP_FROM,
             to: to,
             subject: subject,
-            html: html
-           
+            html           
         })
         console.log(info);
         logger.info(`\u2709\uFE0F Email sent to ${to}: ${info.messageId}`);

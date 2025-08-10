@@ -6,9 +6,12 @@ import type { NextFunction, Request, Response } from "express";
 
 import { UserServices } from "../user/user.service";
 import { AuthServices } from "./auth.service";
+import { mongoConnector } from "@repo/db";
+import { env } from "@/configs/envConfig";
 
 const registerUser = catchAsync(
   async (req: Request, res: Response, _next: NextFunction) => {
+    await mongoConnector(env.DB_URI);
     const user = await UserServices.createUser(req.body);
 
     sendResponse(res, {
@@ -22,6 +25,7 @@ const registerUser = catchAsync(
 
 const login = catchAsync(
   async (req: Request, res: Response, _next: NextFunction) => {
+    await mongoConnector(env.DB_URI);
     const generatedTokens = await AuthServices.login(req.body);
 
     setAuthCookies(res, generatedTokens);
@@ -41,6 +45,7 @@ const login = catchAsync(
 // Refresh token function
 const reissueAccessToken = catchAsync(
   async (req: Request, res: Response, _next: NextFunction) => {
+    await mongoConnector(env.DB_URI);
     const authHeader = req.headers.authorization;
 
     if (!authHeader?.startsWith("Bearer ")) {
@@ -70,6 +75,7 @@ const reissueAccessToken = catchAsync(
 const logout = catchAsync(
   async (_req: Request, res: Response, _next: NextFunction) => {
     // Clear the refresh token cookie (if set)
+    
     res.clearCookie("accessToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

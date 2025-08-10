@@ -61,7 +61,7 @@
 			"esm",
 			"cjs"
 		],
-		"target": "es2020",
+		"target": "ES2022",
 		"sourcemap": true,
 		"clean": true,
 		"dts": true,

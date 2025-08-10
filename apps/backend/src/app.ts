@@ -13,7 +13,10 @@ import cookieParser from "cookie-parser";
 const app: Express = express();
 
 // Connect to Database
-mongoConnector(env.DB_URI).catch((err: Error) => console.error(err));
+// mongoConnector(env.DB_URI).catch((err: Error) => console.error(err));
+(async () => {
+  await mongoConnector(env.DB_URI);  
+})();
 
 // Middlewares
 app.use(cors({
