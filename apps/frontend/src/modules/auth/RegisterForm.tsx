@@ -160,7 +160,10 @@ export function RegisterForm({
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
+            <Button 
+                type="submit"
+                className="w-full cursor-pointer transition-colors duration-200 hover:bg-blue-500 bg-primary hover:text-white"
+              >
               Submit
             </Button>
           </form>
@@ -170,7 +173,7 @@ export function RegisterForm({
 
       <div className="text-center text-sm">
         Already have an account?{" "}
-        <Link to="/login" className="underline underline-offset-4">
+        <Link to="/login" className="underline underline-offset-4 text-sky-400 hover:font-medium">
           Login
         </Link>
       </div>

@@ -95,7 +95,10 @@ export function LoginForm({
               )}
             />
 
-            <Button type="submit" className="w-full">
+            <Button
+              type="submit"
+              className="w-full cursor-pointer transition-colors duration-200 hover:bg-blue-500 bg-primary hover:text-white"
+            >
               Login
             </Button>
           </form>
@@ -103,7 +106,7 @@ export function LoginForm({
       </div>
       <div className="text-center text-sm">
         Don&apos;t have an account?{" "}
-        <Link to="/register" replace className="underline underline-offset-4">
+        <Link to="/register" replace className="underline underline-offset-4 text-sky-400 hover:font-medium">
           Register
         </Link>
       </div>
