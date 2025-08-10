@@ -77,6 +77,9 @@ importers:
       redis:
         specifier: ^5.8.0
         version: 5.8.0
+      resend:
+        specifier: ^4.8.0
+        version: 4.8.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       yamljs:
         specifier: ^0.3.0
         version: 0.3.0

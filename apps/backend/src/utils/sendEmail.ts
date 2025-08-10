@@ -1,11 +1,12 @@
 
 import AppError from "@/configs/AppError";
 import { env } from "@/configs/envConfig";
-import ejs from "ejs";
+
 import nodemailer from "nodemailer";
-import path, { dirname } from "node:path";
+// import path, { dirname } from "node:path";
 import { logger } from "./logger";
-import { fileURLToPath } from "node:url";
+// import { fileURLToPath } from "node:url";
+import { Resend } from 'resend';
 
 const html = `<!DOCTYPE html>
 <html lang="en">
@@ -194,8 +195,8 @@ const html = `<!DOCTYPE html>
 </body>
 </html>`
 // Fix for __dirname in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
 const transporter = nodemailer.createTransport({
     port: Number(env.SMTP_PORT),
@@ -227,14 +228,24 @@ export const sendEmail = async ({
     try {
         // const templatePath = path.join(__dirname, 'templates', `${templateName}.ejs`);        
         // const html = await ejs.renderFile(templatePath, templateData || {});
-        const info = await transporter.sendMail({
-            from: env.SMTP_FROM,
-            to: to,
-            subject: subject,
-            html           
-        })
-        console.log(info);
-        logger.info(`\u2709\uFE0F Email sent to ${to}: ${info.messageId}`);
+        // const info = await transporter.sendMail({
+            // from: env.SMTP_FROM,
+            // to: to,
+            // subject: subject,
+            // html           
+        // })
+        
+    const resend = new Resend(env.RESEND_API_KEY);
+
+    const info = resend.emails.send({
+        from: env.SMTP_FROM,
+        to: to,
+        subject: subject,
+        html           
+    });
+        console.log(info)
+
+        logger.info(`\u2709\uFE0F Email sent to ${to}`);
     } catch (error: any) {
         logger.info("email sending error", error.message);
         console.log(error);

@@ -75,7 +75,8 @@ const envSchema = z.object({
 			}),
 		SMTP_USER: z.string(),
 		SMTP_PASS: z.string(),
-		SMTP_FROM: z.string().email(),
+		SMTP_FROM: z.string().email(),	
+		RESEND_API_KEY: z.string(),
 });
 
 // Validate process.env and infer typed env object
