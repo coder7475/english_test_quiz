@@ -1,5 +1,6 @@
 import App from "@/App";
 import About from "@/pages/About";
+import Dashboard from "@/pages/Dashboard";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
         {
           path: "verify",
           element: <Verify />
+        },
+        {
+          path: "dashboard",
+          element: <Dashboard />
         },
         {
           path: "*",
